@@ -1,13 +1,37 @@
 import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+
+import BottomTabRoute from './src/routes/BottomTabRoute';
+
+import firebase from './src/connections/fireBaseConfig';
+import Login from './src/components/Login';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  
+  const [user, setUser] = useState(null)
+
+  if(!user){
+
+    return(
+
+      <Login newUser={setUser}/>
+
+    )
+
+  }else{
+
+    return (
+      <NavigationContainer>
+  
+        <BottomTabRoute userUid={user}/>
+  
+      </NavigationContainer>
+    );
+
+  }
+
 }
 
 const styles = StyleSheet.create({

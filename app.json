@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "petshop",
+    "name": "Petshop App",
     "slug": "petshop",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "dev_victor.petshop_app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b5303316-dfc3-4b86-8ad1-e02e56a1a5f4"
+      }
     }
   }
 }
