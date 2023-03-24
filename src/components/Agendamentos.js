@@ -11,19 +11,25 @@ export default function Agendamentos({route}) {
 
     function getPets(){
     
-      firebase.database().ref(`agendamentos/${user}/pets`).once('value', (snapshot) => {
-  
-        setPets([]);
+      firebase.database().ref(`cadastros/${user}/pets`).on('value', (snapshot) => {
+
+          setPets([])
 
           snapshot?.forEach((childItem) => {
 
-            let nome = childItem.val().nome
+            let pet = {
 
-            setPets(oldPets => [...oldPets, {value: nome, text: nome}])
+              key: childItem.key,
+              value: childItem.key, 
+              text: childItem.val().nome,
+
+            }
+
+            setPets(oldPets => [...oldPets, pet])
 
           })
 
-          setPicker(pets[0])
+          setPicker(pets[0].nome)
 
       })
 
@@ -38,8 +44,9 @@ export default function Agendamentos({route}) {
  return (
    <View>
 
-      <Text> Cadastrar Agendamento </Text>
+      <Text> Cadastrar Agendamento do {picker} </Text>
       <Picker
+        style={styles.addPicker}
         onChanged={setPicker}
         options={pets}
         value={picker}
@@ -60,6 +67,18 @@ const styles = StyleSheet.create({
       backgroundColor: "#fff",
       borderWidth: 1.5,
       margin: 5,
-  }, 
+  },
+  addPicker:{
+
+    borderColor: "#d6d6d6",
+    backgroundColor: "#fff",
+    borderWidth: 1.0,
+    paddingVertical: 1,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    color: "#000",
+    minWidth: '80%',
+
+  },
 
 });

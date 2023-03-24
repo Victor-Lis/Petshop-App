@@ -52,7 +52,7 @@ export default function Login({newUser}) {
             .then(user => {
 
                 newUser(user.user.uid)
-                const newRef = firebase.database().ref(`agendamentos/${user.user.uid}`);
+                const newRef = firebase.database().ref(`cadastros/${user.user.uid}`);
                 newRef.set({
 
                     cargo: "Cliente",
@@ -89,12 +89,12 @@ export default function Login({newUser}) {
                 onChangeText={setNome}
             /> 
         }
-        <TextInput
-            placeholder='Seu email'
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-        />
+            <TextInput
+                placeholder='Seu email'
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+            />
         {type != 'login' && 
             <TextInput
                 placeholder='Celular'

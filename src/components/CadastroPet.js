@@ -14,9 +14,10 @@ export default function CadastroPet({route}) {
 
       if(nomePet != " " && idadePet.indexOf("-") == -1 && idadePet.indexOf(".") == -1 && idadePet > 0 && idadePet < 100){
 
-        let pets = firebase.database().ref(`agendamentos/${user}/pets`)
+        let pets = firebase.database().ref(`cadastros/${user}/pets`)
         let chave = pets.push().key
   
+        // "agendamentos/${user}/pets/chave"
         pets.child(chave).set({
   
           nome: nomePet,

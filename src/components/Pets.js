@@ -11,7 +11,7 @@ export default function Pets({route}) {
 
     function handleDelete(key){
 
-      firebase.database().ref(`agendamentos/${user}/pets/${key}`).remove()
+      firebase.database().ref(`cadastros/${user}/pets/${key}`).remove()
       .then(() => {
   
         const findPets = pets.filter( item => item.key !== key)
@@ -31,7 +31,7 @@ export default function Pets({route}) {
     
           }
     
-          firebase.database().ref(`agendamentos/${user}/pets`).on('value', (snapshot) => {
+          firebase.database().ref(`cadastros/${user}/pets`).on('value', (snapshot) => {
     
             setPets([]);
     

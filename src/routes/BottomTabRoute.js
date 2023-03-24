@@ -32,7 +32,7 @@ export default function BottomTabRoute({userUid}) {
                 },
             }}
         />
-        {/* <Tab.Screen
+        <Tab.Screen
             name="Agendamento"
             component={Agendamentos}
             initialParams={{userUid: userUid}}
@@ -41,7 +41,7 @@ export default function BottomTabRoute({userUid}) {
                   return <Feather name="calendar" color={color} size={size} />
                 },
             }}
-        /> */}
+        />
     </Tab.Navigator>
   );
 }
