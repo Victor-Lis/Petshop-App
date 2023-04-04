@@ -1,57 +1,143 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { format, parseISO } from 'date-fns';
 import Picker from '@ouroboros/react-native-picker';
 import firebase from '../connections/fireBaseConfig';
 
 export default function Agendamentos({route}) {
 
-    const [user, setUser] = useState(route.params?.userUid)
-    const [pets, setPets] = useState([{}])
-    const [picker, setPicker] = useState('');
+  const [user, setUser] = useState(route.params?.userUid)
+  const [horario, setHorario] = useState(null)
+  const [data, setDate] = useState(null)
+  const [pets, setPets] = useState([])
+  const [picker, setPicker] = useState(null)
+  const [petDatas, setPetDatas] = useState({})
 
-    function getPets(){
-    
-      firebase.database().ref(`cadastros/${user}/pets`).on('value', (snapshot) => {
+  async function marcar(){
 
-          setPets([])
+    if(data != null && horario != null && picker != null){
 
-          snapshot?.forEach((childItem) => {
+      firebase.database().ref(`agendamentos/${data}`).once('value', (snapshot) => {
 
-            let pet = {
+        if(snapshot.exists()) {
+          firebase.database().ref(`agendamentos/${data}/${horario}`).on('value', (snapshot) => {
 
-              key: childItem.key,
-              value: childItem.key, 
-              text: childItem.val().nome,
+            if(snapshot.exists()){
 
+              alert("Horário Indisponivel")
+              
+            }else{
+      
+              let agendamentos = firebase.database().ref(`agendamentos/${data}/${horario}`)
+  
+              // "agendamentos/${user}/pets/chave"
+              agendamentos.set(petDatas)
+              
             }
-
-            setPets(oldPets => [...oldPets, pet])
-
           })
-
-          setPicker(pets[0].nome)
+        }else{
+          let agendamentos = firebase.database().ref(`agendamentos/${data}/`)
+  
+          // "agendamentos/${user}/pets/chave"
+          agendamentos.set(horario)
+          firebase.database().ref(`agendamentos/${data}/${horario}`).set(petDatas)
+        }
 
       })
 
     }
 
-    useEffect(() => 
+  }
 
-      getPets()
-    
-    ,[])
+  useEffect(() => {
+
+    function getPetDatas(){
+
+      firebase.database().ref(`cadastros/${user}/pets/${picker}`).on('value', (snapshot) => {
+
+          console.log(snapshot.val())
+
+          let petDatas = {
+
+            petIdade: snapshot.val().idade,
+            petNome: snapshot.val().nome,
+            petId: snapshot.key,
+            especie: snapshot.val().especie,
+            responsavel: user
+
+          }
+          
+          setPetDatas(petDatas)
+
+      })
+
+    }
+
+    if(picker != null){
+
+      getPetDatas()
+
+    }
+
+  }, [picker])
+
+  useEffect(() => {
+
+    function getPets(){
+
+      firebase.database().ref(`cadastros/${user}/pets`).on('value', (snapshot) => {
+
+        setPets([{text: "Selecione um pet", value: "selecione"}]);
+
+        snapshot?.forEach((childItem) => {
+
+          let data = {
+
+            text: childItem.val().nome,
+            value: childItem.key,
+
+          }
+          
+          setPets(oldPets => [...oldPets, data])
+
+        })
+
+      })
+
+    }
+
+    getPets()
+
+  }, [])
 
  return (
-   <View>
+   <View style={styles.container}>
+      <TextInput 
+      
+        placeholder='Data'
+        value={data}
+        onChangeText={(text) => setDate(text)}
 
-      <Text> Cadastrar Agendamento do {picker} </Text>
+      />
+      <TextInput
+      
+        placeholder='Horário'
+        value={horario}
+        onChangeText={setHorario}
+
+      />
       <Picker
-        style={styles.addPicker}
-        onChanged={setPicker}
+      
         options={pets}
         value={picker}
-      />
+        onChanged={setPicker}
 
+      />
+      <TouchableOpacity onPress={() => marcar()}>
+
+        <Text> Marcar! </Text>
+
+      </TouchableOpacity>
    </View>
   );
 }
@@ -61,24 +147,13 @@ const styles = StyleSheet.create({
   container: {
       padding: 3.5,
       alignItems: 'center',
-      flexDirection: "row",
+      justifyContent: 'center',
+      flexDirection: "column",
       borderRadius: 15,
       borderColor: "#fefbfe",
       backgroundColor: "#fff",
       borderWidth: 1.5,
       margin: 5,
   },
-  addPicker:{
-
-    borderColor: "#d6d6d6",
-    backgroundColor: "#fff",
-    borderWidth: 1.0,
-    paddingVertical: 1,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-    color: "#000",
-    minWidth: '80%',
-
-  },
-
+  
 });

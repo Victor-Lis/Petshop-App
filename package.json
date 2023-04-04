@@ -12,6 +12,7 @@
     "@ouroboros/react-native-picker": "^0.2.1",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
+    "date-fns": "^2.22.1",
     "expo": "~48.0.9",
     "expo-status-bar": "~1.4.4",
     "firebase": "^8.8.1",

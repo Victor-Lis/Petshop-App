@@ -22,7 +22,8 @@ export default function CadastroPet({route}) {
   
           nome: nomePet,
           idade: idadePet,
-          especie: picker
+          especie: picker,
+          responsavel: user,
   
         })
 
