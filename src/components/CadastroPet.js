@@ -23,6 +23,7 @@ export default function CadastroPet({route}) {
           nome: nomePet,
           idade: idadePet,
           especie: picker,
+          agendamentos: "",
           responsavel: user,
   
         })
