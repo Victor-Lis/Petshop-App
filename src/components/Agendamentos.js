@@ -41,6 +41,25 @@ export default function Agendamentos({route}) {
   
               // "agendamentos/${user}/pets/chave"
               agendamentos.set(petDatas)
+
+              const agendamentosDB = firebase.database().ref(`cadastros/${user}/pets/${picker}/agendamentos`)
+              let key = agendamentosDB.push().key
+
+              agendamentosDB.child(key).set({
+  
+                data: data,
+                hora: horario,
+                petID: picker,
+        
+              })
+
+              setMinuto("00")
+              setHora("")
+              setDate("")
+              setMonth("")
+              setPicker("")
+
+              alert("Pet Cadastrado!")
               
             }
           })
@@ -51,10 +70,25 @@ export default function Agendamentos({route}) {
           agendamentos.set(horario)
           firebase.database().ref(`agendamentos/${data}/${horario}`).set(petDatas)
           
-          const agendamentosRef = firebase.database().ref(`cadastros/${user}/pets/${picker}/agendamentos`);
-          const novoAgendamentoRef = agendamentosRef.push();
-          novoAgendamentoRef.set(petDatas);
+          const agendamentosDB = firebase.database().ref(`cadastros/${user}/pets/${picker}/agendamentos`)
+          let key = agendamentosDB.push().key
+
+          agendamentosDB.child(key).set({
+
+            data: data,
+            hora: horario,
+            petID: picker,
+    
+          })
           
+          setMinuto("00")
+          setHora("")
+          setDate("")
+          setMonth("")
+          setPicker("")
+
+          alert("Pet Cadastrado!")
+
         }
 
       })
